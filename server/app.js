@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 
 
 app.get('/topStories', async(req, res) => {
-    console.log(req.params);
+    //console.log(req.params);
     const api_url = `https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty`
     const hn_response = await axios.get(api_url);
     //const top_story_data = await hn_response;
@@ -23,12 +23,21 @@ app.get('/topStories', async(req, res) => {
         content: hn_response
     } */
     try {
-        hn_response
-        console.log(hn_response.data)
+
+
+        const responseSliced = hn_response.data.slice(0, 9)
+
+        const responseLinks = responseSliced.map(id => {
+            return ` https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+        })
+        console.log(responseLinks)
+        return hn_response
     } catch (error) {
         console.error(error)
     }
 })
+
+
 
 app.listen(port, () => {
     console.log(`Running app on port ${port}`)
